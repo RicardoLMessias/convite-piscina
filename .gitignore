@@ -1,0 +1,27 @@
+# Dependências (reinstaladas com npm install)
+node_modules/
+
+# Build gerado pelo Vite (recriado com npm run build)
+dist/
+
+# Configuração com senhas do banco, do SMTP e do painel admin
+api/config.php
+
+# Pacotes de deploy e backups (arquivos .zip, não são código-fonte)
+updates/
+backups/
+*.zip
+
+# Vídeos pesados de divulgação
+*.mp4
+
+# Variáveis de ambiente, se você criar
+.env
+.env.*
+
+# Lixo do sistema e do editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.log

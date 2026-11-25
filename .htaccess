@@ -1,0 +1,15 @@
+Options -Indexes
+RewriteEngine On
+
+RewriteRule ^updates(?:/|$) - [F,L]
+RewriteRule ^backups(?:/|$) - [F,L]
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+RewriteRule ^admin/?$ admin.html [L]
+
+<FilesMatch "\.(sql|md)$">
+  Require all denied
+</FilesMatch>
+
+<Files "config.php">
+  Require all denied
+</Files>

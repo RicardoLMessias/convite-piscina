@@ -1,0 +1,46 @@
+// Edite este arquivo para atualizar os dados e os textos do convite.
+export const event = {
+  honoree: 'Olivia Maria',
+  title: 'Festa na piscina',
+  dateTime: '2026-12-05T13:00:00-03:00',
+  dateParts: {
+    day: '05',
+    month: 'dezembro',
+    year: '2026',
+  },
+  weekday: 'Sábado',
+  time: '13:00h',
+  venueName: '',
+  address: '',
+  mapUrl: '',
+  program: [
+    { time: '13h', activity: 'início festa' },
+    { time: '13:30 às 15h', activity: 'almoço' },
+    { time: '15:00', activity: 'mesa de Hotdog' },
+    { time: '16:30', activity: 'parabéns' },
+    { time: '18h', activity: 'encerramento' },
+  ],
+  maxCompanions: 8,
+  allowChildren: true,
+  successMessage: 'Confirmação salva com sucesso.',
+  logo: '/assets/logo-olivia-clean.png',
+  logoAlt: 'Olivia Maria — festa na piscina',
+};
+
+export const copy = {
+  invitationLabel: 'Você está convidado',
+  heroTitle: 'Um dia de sol, água e diversão!',
+  heroDescription: 'Venha comemorar esse dia especial com a Olivia.',
+  heroButton: 'Ver detalhes',
+  dateEyebrow: 'Anote na agenda',
+  dateTitle: 'Nosso encontro',
+  locationEyebrow: 'Como chegar',
+  locationTitle: 'Programação',
+  locationPending: 'Programação',
+  locationDescription: 'O endereço será liberado mediante a confirmação de presença.',
+  rsvpEyebrow: 'Esperamos você',
+  rsvpTitle: 'confirme sua presença',
+  rsvpDescription: 'Vai conseguir estar com a gente?',
+  rsvpButton: 'Enviar confirmação',
+  footer: 'Com carinho, Olivia Maria',
+};

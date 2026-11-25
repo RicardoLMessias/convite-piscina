@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard DRK RSVP</title>
+    <link rel="stylesheet" href="admin-styles.css?v=20260928-guest-sort">
+  </head>
+  <body>
+    <header class="topbar">
+      <strong>DRK RSVP Pro</strong>
+      <nav>
+        <a href="/">Convite</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="panel" id="dashboard">
+        <div class="section-title row">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h2>Dashboard</h2>
+          </div>
+          <div class="toolbar admin-only">
+            <button class="secondary" type="button" id="refresh-dashboard">Atualizar</button>
+            <a class="secondary link-button" href="/api/export.pdf">Exportar PDF</a>
+            <button class="secondary" type="button" id="logout-admin">Sair</button>
+          </div>
+        </div>
+
+        <form class="login-box" id="admin-login">
+          <label>
+            Usuario
+            <input name="username" required placeholder="admin ou cliente">
+          </label>
+
+          <label>
+            Senha
+            <input name="password" type="password" required placeholder="Digite a senha">
+          </label>
+          <button class="primary" type="submit">Entrar no dashboard</button>
+          <p class="form-message" id="login-message" role="status"></p>
+        </form>
+
+        <div class="admin-area" id="admin-area" hidden>
+          <div class="user-strip">
+            <span id="current-user-label"></span>
+          </div>
+
+          <details class="settings-box owner-only" open>
+            <summary>Configura&ccedil;&otilde;es do evento</summary>
+            <form class="settings-form" id="event-settings-form">
+              <label>
+                Nome do evento
+                <input name="title" required>
+              </label>
+
+              <label>
+                Descri&ccedil;&atilde;o
+                <textarea name="description" rows="3"></textarea>
+              </label>
+
+              <label>
+                Data ISO para contador
+                <input name="date" required placeholder="2028-05-23T19:30:00-03:00">
+              </label>
+
+              <label>
+                Data vis&iacute;vel
+                <input name="dateText" required placeholder="23.05.28">
+              </label>
+
+              <label>
+                Hor&aacute;rio vis&iacute;vel
+                <input name="timeText" required placeholder="19:30h">
+              </label>
+
+              <label>
+                Nome do local
+                <input name="venueName" required>
+              </label>
+
+              <label>
+                Endere&ccedil;o
+                <input name="address" required>
+              </label>
+
+              <label>
+                Busca do mapa
+                <input name="mapQuery" required>
+              </label>
+
+              <label>
+                WhatsApp
+                <input name="whatsappNumber" inputmode="tel">
+              </label>
+
+              <label>
+                Mensagem do WhatsApp
+                <textarea name="whatsappMessage" rows="3"></textarea>
+              </label>
+
+              <label>
+                Limite de acompanhantes
+                <input name="maxCompanions" type="number" min="0" step="1">
+              </label>
+
+              <label class="checkbox-row">
+                <input name="allowChildren" type="checkbox">
+                Permitir marcar crian&ccedil;as
+              </label>
+
+              <label>
+                Mensagem ap&oacute;s confirma&ccedil;&atilde;o
+                <input name="successMessage">
+              </label>
+
+              <button class="primary" type="submit">Salvar configura&ccedil;&otilde;es</button>
+              <p class="form-message" id="settings-message" role="status"></p>
+            </form>
+          </details>
+
+          <details class="settings-box owner-only">
+            <summary>Usuarios do sistema</summary>
+            <div class="users-list" id="users-list"></div>
+          </details>
+
+          <div class="stats" id="stats"></div>
+
+          <section class="settings-box owner-only broadcast-box" aria-labelledby="broadcast-title">
+            <h3 id="broadcast-title">Mensagem para os convidados</h3>
+            <p class="broadcast-intro">Envie uma mensagem individual por e-mail ou prepare conversas de WhatsApp para os convidados que aceitaram receber atualizações.</p>
+            <form id="broadcast-form" class="broadcast-form">
+              <label>
+                Assunto do e-mail
+                <input name="subject" maxlength="180" required placeholder="Informações importantes da festa">
+              </label>
+              <label>
+                Mensagem
+                <textarea name="message" rows="5" maxlength="5000" required placeholder="Escreva aqui a mensagem para os convidados"></textarea>
+              </label>
+              <div class="broadcast-actions">
+                <button class="primary" type="submit" id="send-broadcast-email">Enviar para todos por e-mail</button>
+                <button class="secondary" type="button" id="prepare-broadcast-whatsapp">Preparar WhatsApp</button>
+              </div>
+              <p class="broadcast-note" id="broadcast-note">O WhatsApp abrirá uma conversa por vez com o texto pronto; revise e toque em enviar em cada conversa.</p>
+              <p class="form-message" id="broadcast-message" role="status" aria-live="polite"></p>
+            </form>
+            <div class="whatsapp-recipient-list" id="whatsapp-recipient-list" hidden></div>
+          </section>
+
+          <div class="dashboard-grid">
+            <article>
+              <h3>Poss&iacute;veis duplicados</h3>
+              <div id="duplicate-list" class="duplicate-list"></div>
+            </article>
+
+            <article>
+              <h3>Convidados &uacute;nicos</h3>
+              <div class="guest-tools">
+                <input class="search" id="guest-search" placeholder="Buscar por nome ou telefone" aria-label="Buscar convidados por nome ou telefone">
+                <label>
+                  Filtrar por tipo
+                  <select id="guest-type-filter">
+                    <option value="all">Todos</option>
+                    <option value="adult">Adultos</option>
+                    <option value="child">Crian&ccedil;as</option>
+                  </select>
+                </label>
+                <label>
+                  Ordenar por
+                  <select id="guest-sort">
+                    <option value="name-asc">Nome (A&ndash;Z)</option>
+                    <option value="name-desc">Nome (Z&ndash;A)</option>
+                    <option value="responsible-asc">Respons&aacute;vel (A&ndash;Z)</option>
+                    <option value="adults-first">Adultos primeiro</option>
+                    <option value="children-first">Crian&ccedil;as primeiro</option>
+                  </select>
+                </label>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Tipo</th>
+                      <th>Respons&aacute;vel</th>
+                      <th>Telefone</th>
+                      <th>E-mail</th>
+                      <th>Status</th>
+                      <th id="guest-actions-heading" hidden>A&ccedil;&otilde;es</th>
+                    </tr>
+                  </thead>
+                  <tbody id="guest-rows"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="edit-dialog" id="edit-guest-dialog">
+      <form id="edit-guest-form" method="dialog">
+        <div class="section-title row">
+          <div>
+            <p class="eyebrow">Editar</p>
+            <h2>Convidado</h2>
+          </div>
+          <button class="secondary small-action" type="button" id="close-edit-dialog">Fechar</button>
+        </div>
+
+        <input type="hidden" name="guestId">
+
+        <label>
+          Nome completo
+          <input name="fullName" required>
+        </label>
+
+        <label>
+          Tipo
+          <select name="type">
+            <option value="adult">Adulto</option>
+            <option value="child">Crian&ccedil;a</option>
+          </select>
+        </label>
+
+        <label>
+          Status
+          <select name="status">
+            <option value="confirmed">Confirmado</option>
+            <option value="declined">N&atilde;o vai</option>
+          </select>
+        </label>
+
+        <button class="primary" type="submit">Salvar altera&ccedil;&otilde;es</button>
+        <p class="form-message" id="edit-message" role="status"></p>
+      </form>
+    </dialog>
+
+    <script src="admin.js?v=20260928-guest-sort"></script>
+  </body>
+</html>
